@@ -21,9 +21,9 @@ import java.util.concurrent.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MultiThreadExceptionTest {
-    Logger logger = LoggerFactory.getLogger(MultiThreadExceptionTest.class);
+    private Logger logger = LoggerFactory.getLogger(MultiThreadExceptionTest.class);
 
-    ThreadPoolExecutor executor;
+    private ThreadPoolExecutor executor;
 
     @Before
     public void prepareThreadPool() {
@@ -41,9 +41,8 @@ public class MultiThreadExceptionTest {
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    //抛出 IndexOutOfBoundsException 异常
-                    List list = new ArrayList();
-                    list.get(0);
+                    //抛出 RuntimeException 异常
+                    throw new RuntimeException();
                 }
             });
         }catch (Exception e){
@@ -61,9 +60,8 @@ public class MultiThreadExceptionTest {
         Future<String> future = executor.submit(new Callable<String>() {
             @Override
             public String call() throws Exception {
-                //抛出 IndexOutOfBoundsException 异常
-                List<String> list = new ArrayList<String>();
-                return list.get(0);
+                //抛出 RuntimeException 异常
+               throw new RuntimeException();
             }
         });
         try {

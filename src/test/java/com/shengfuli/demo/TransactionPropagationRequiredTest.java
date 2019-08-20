@@ -29,7 +29,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TransactionPropagationRequiredTest {
-    Logger logger = LoggerFactory.getLogger(MultiThreadExceptionTest.class);
+    private Logger logger = LoggerFactory.getLogger(MultiThreadExceptionTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -112,27 +112,27 @@ public class TransactionPropagationRequiredTest {
      *   外围方法抛出异常会导致booking1ServiceOne.addRequired()、booking1ServiceTwo.addRequired()两个方法回滚
      *
      */
-    @Test
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
-    public void  propagation_required_with_transaction(){
-        booking1ServiceOne.addRequired("张三");
-        booking1ServiceTwo.addRequiredException("李四");
-        throw new RuntimeException();
-    }
 
     /**
      * 为什么下面invoke_propagation_required_with_transaction方法的结果和我们预期的不一致？与invoke_insert_propagation_required有什么不同之处？
      * 提示：TransactionPropagation类中调用内部的@Transactional注解方法，能生效吗？为什么？
      */
-    @Test
-    public void invoke_propagation_required_with_transaction(){
-        try{
-            propagation_required_with_transaction();
-        }catch (RuntimeException e){
-            Assert.isTrue(findAllBookings().size() == 0, "the number of record must be zero.");
-            logger.info(e.getMessage(),e);
-        }
-    }
+//    @Test
+//    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = RuntimeException.class)
+//    public void  propagation_required_with_transaction(){
+//        booking1ServiceOne.addRequired("张三");
+//        booking1ServiceTwo.addRequiredException("李四");
+//        throw new RuntimeException();
+//    }
+//    @Test
+//    public void invoke_propagation_required_with_transaction(){
+//        try{
+//            propagation_required_with_transaction();
+//        }catch (RuntimeException e){
+//            Assert.isTrue(findAllBookings().size() == 0, "the number of record must be zero.");
+//            logger.info(e.getMessage(),e);
+//        }
+//    }
     @Test
     public void invoke_insert_propagation_required(){
         String oneName = "张三";
