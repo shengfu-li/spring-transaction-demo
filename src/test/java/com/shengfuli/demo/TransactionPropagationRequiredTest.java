@@ -141,7 +141,7 @@ public class TransactionPropagationRequiredTest {
             bookingRequired.insert_propagation_required(oneName,anotherName);
         }catch (RuntimeException e){
             Assert.isTrue(findAllBookings().size() == 0,"the number of record must be zero.");
-            logger.info(e.getMessage(),e);
+            logger.info(findAllBookings().toString());
         }
     }
 }
