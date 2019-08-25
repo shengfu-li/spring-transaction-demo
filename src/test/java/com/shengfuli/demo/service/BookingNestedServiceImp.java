@@ -1,37 +1,35 @@
 package com.shengfuli.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
+import javax.annotation.Resource;
 
 /**
- * @Description: 使用Propagation.REQUIRES_NEW 事务传播
+ * @Description:
  * @Author: lishengfu
- * @Date: 16:29 2019/08/19
+ * @Date: 17:26 2019/08/25
  **/
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Booking2ServiceImp implements Booking2Service {
-    @Autowired
+public class BookingNestedServiceImp implements BookingNestedService {
+    @Resource
     JdbcTemplate jdbcTemplate;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void addRequiresNew(String name) {
+    @Transactional(propagation = Propagation.NESTED)
+    public void addNested(String name) {
         jdbcTemplate.update("insert into BOOKINGS(NAME) values (?)", name);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void addRequiresNewException(String name) {
+    @Transactional(propagation = Propagation.NESTED)
+    public void addNestedException(String name) {
         jdbcTemplate.update("insert into BOOKINGS(NAME) values (?)", name);
-        throw new RuntimeException();
+        throw  new RuntimeException();
     }
 }

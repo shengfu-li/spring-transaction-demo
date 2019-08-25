@@ -9,33 +9,25 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @Description: 使用Propagation.REQUIRED 事务传播
+ * @Description: 使用Propagation.REQUIRES_NEW 事务传播
  * @Author: lishengfu
- * @Date: 16:17 2019/08/19
+ * @Date: 16:29 2019/08/19
  **/
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Booking1ServiceImp implements  Booking1Service{
+public class BookingRequiresNewServiceImp implements BookingRequiresNewService {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    /**
-     * 插入一条记录，并且设置事务传播行为：Propagation.REQUIRED
-     * @param name
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void addRequired(String name) {
+    public void addRequiresNew(String name) {
         jdbcTemplate.update("insert into BOOKINGS(NAME) values (?)", name);
     }
 
-    /**
-     * 插入一条记录，抛出RuntimeException,并且设置事务传播行为：Propagation.REQUIRED
-     * @param name
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void addRequiredException(String name) {
+    public void addRequiresNewException(String name) {
         jdbcTemplate.update("insert into BOOKINGS(NAME) values (?)", name);
         throw new RuntimeException();
     }

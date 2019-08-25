@@ -1,7 +1,6 @@
 package com.shengfuli.demo.propogation;
 
-import com.shengfuli.demo.service.Booking1Service;
-import com.shengfuli.demo.service.Booking2Service;
+import com.shengfuli.demo.service.BookingRequiredService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,10 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookingRequired {
 
     @Autowired
-    Booking1Service booking1ServiceOne;
+    BookingRequiredService bookingRequiredServiceOne;
 
     @Autowired
-    Booking1Service booking1ServiceTwo;
+    BookingRequiredService bookingRequiredServiceTwo;
 
     /**
      * 外围方法开启了事务,并且抛出RuntimeException, 事务传播行为：propagation_required
@@ -31,8 +30,8 @@ public class BookingRequired {
      **/
     @Transactional(propagation = Propagation.REQUIRED)
     public void insert_propagation_required(String oneName, String anotherName){
-        booking1ServiceOne.addRequired(oneName);
-        booking1ServiceTwo.addRequiredException(anotherName);
+        bookingRequiredServiceOne.addRequired(oneName);
+        bookingRequiredServiceTwo.addRequiredException(anotherName);
         throw new RuntimeException();
     }
 }
